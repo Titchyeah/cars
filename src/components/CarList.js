@@ -5,12 +5,15 @@ import { removeCar } from "../store";
 function CarList() {
 
     const dispatch = useDispatch();
-    const cars = useSelector((state) => {
-        return state.cars.data;
+
+    const cars = useSelector(({ cars: { data, searchTerm } }) => {
+        return data.filter((car) => car.name.toLowerCase().includes(searchTerm.toLowerCase()));
     });
+
     const handleCarDelete = (car) => {
         dispatch(removeCar(car.id));
     };
+
     const renderedCars = cars.map((car) => {
         return (<div key={car.id} className="panel">
             <p>
@@ -18,7 +21,7 @@ function CarList() {
             </p>
             <button
                 className="button is-danger"
-                onClick={() =>{handleCarDelete(car)}}
+                onClick={() => { handleCarDelete(car) }}
             >
                 Delete
             </button>
@@ -29,7 +32,7 @@ function CarList() {
     return <div className="car-list">
         {renderedCars}
         <hr />
-        </div>
+    </div>
 }
 
 export default CarList;
